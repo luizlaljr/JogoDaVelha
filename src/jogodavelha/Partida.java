@@ -7,7 +7,7 @@ import java.util.Scanner;
  *
  * @author luizlaljr
  *
- * @version 1.3
+ * @version 1.5
  */
 class Partida {
     
@@ -105,7 +105,9 @@ class Partida {
             case JOGADOR_2:
                 System.out.println(jogador_2.getNome() + " ganhou o jogo.");
                 break;
+                
         }
+        
     }
 
     /**
