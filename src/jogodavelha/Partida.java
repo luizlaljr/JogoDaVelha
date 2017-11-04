@@ -11,16 +11,49 @@ import java.util.Scanner;
  */
 class Partida {
     
+    /**
+     * Constante do tipo Byte o qual representa que a partida continua.
+     */
     public static final byte CONTINUA_PARTIDA = 2;
+    
+    /**
+     * Constante do tipo Byte o qual representa que o tabuleiro está todo preenchido e a partida terminou empatada.
+     */
     public static final byte EMPATE = 0;
+    
+    /**
+     * Constante do tipo Byte o qual representa que a posição está marcada com o símbolo do jogador 1.
+     */
     public static final byte JOGADOR_1 = 1;
+    
+    /**
+     * Constante do tipo Byte o qual representa que a posição está marcada com o símbolo do jogador 2.
+     */
     public static final byte JOGADOR_2 = -1;
+    
+    /**
+     * Constante do tipo Byte o qual representa que a posição está vazia.
+     */
     public static final byte POSICAO_VAZIA = 0;
-
+    
+    /**
+     * Atributo que representa o jogador 1.
+     */
     private final Jogador jogador_1;
+    
+    /**
+     * Atributo que representa o jogador 2.
+     */
     private final Jogador jogador_2;
+    
+    /**
+     * Atributo que representa o tabuleiro do jogo.
+     */
     private final Tabuleiro tab;
     
+    /**
+     * Inteiro que determina o jogador que está na vez de realizar uma jogada.
+     */
     private int vez;
 
     /**
