@@ -9,7 +9,14 @@ package jogodavelha;
  */
 class Jogador {
 
+    /**
+     * Atributo que representa o nome do Jogador.
+     */
     private final String nome;
+    
+    /**
+     * Atributo que representa o símbolo do Jogador.
+     */
     private final char simbolo;
     
     /**
