@@ -27,8 +27,10 @@ class Jogador {
      * @param simbolo - Símbolo que será atribuído ao jogador criado.
      */
     public Jogador(String nome, char simbolo) {
+        
         this.nome = nome;
         this.simbolo = simbolo;
+        
     }
     
     /**
