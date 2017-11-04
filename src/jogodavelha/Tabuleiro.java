@@ -8,9 +8,15 @@ package jogodavelha;
  * @version 1.5
  */
 class Tabuleiro {
-
+    
+    /**
+     * Constante do tipo Inteiro o qual representa a ordem da matriz de posiçoes.
+     */
     public static final int TAMANHO = 3;
-
+    
+    /**
+     * Matriz de Byte que representa o tabuleiro do Jogo da Velha.
+     */
     private final byte[][] tabuleiro;
     
     /**
