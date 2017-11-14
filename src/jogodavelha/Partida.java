@@ -1,5 +1,7 @@
 package jogodavelha;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -10,6 +12,26 @@ import java.util.Scanner;
  * @version 1.5
  */
 class Partida {
+    
+    /**
+     * Constante do tipo int o qual representa que o jogador 1 é o da vez.
+     */
+    private static final int JOGADORDAVEZ_1 = 1;
+    
+    /**
+     * Constante do tipo int o qual representa que o jogador 2 é o da vez.
+     */
+    private static final int JOGADORDAVEZ_2 = 2;
+    
+    /**
+     * Constante do tipo String o qual representa que a Linha. 
+     */
+    private static final String LINHA = "Linha";
+    
+     /**
+     * Constante do tipo String o qual representa que a Coluna.
+     */
+    private static final String COLUNA = "Coluna";
     
     /**
      * Constante do tipo Byte o qual representa que a partida continua.
@@ -37,15 +59,15 @@ class Partida {
     public static final byte POSICAO_VAZIA = 0;
     
     /**
-     * Atributo que representa o jogador 1.
+     * Atributo que representa a coleção de jogadores.
      */
-    private final Jogador jogador_1;
+    private final Map<Integer,Jogador> jogadores = new HashMap<>();
     
     /**
-     * Atributo que representa o jogador 2.
+     * Atributo que guarda os simbolos dos jogadores.
      */
-    private final Jogador jogador_2;
-    
+    private final char[] simbolo = {'X','O'};
+            
     /**
      * Atributo que representa o tabuleiro do jogo.
      */
@@ -61,21 +83,29 @@ class Partida {
      */
     public Partida() {
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Para iniciar a partida, digite o nome do Jogador 1:");
-        String nome = sc.nextLine();
-        System.out.println("O simbolo do(a) " + nome + " será X");
-        char simbolo = 'X';
-        jogador_1 = new Jogador(nome, simbolo);
-        System.out.println();
-        System.out.println("Digite o nome do Jogador 2:");
-        nome = sc.nextLine();
-        System.out.println("O simbolo do(a) " + nome + " será O");
-        simbolo = 'O';
-        jogador_2 = new Jogador(nome, simbolo);
+        determinarJogadores();
         tab = new Tabuleiro();
         vez = 0;
 
+    }
+    /**
+     * Método que instancia os jogadores.
+     */
+    private void determinarJogadores(){
+        
+        Scanner sc = new Scanner(System.in);
+        int chave = 1;
+        int index = 0;
+        do{
+            System.out.println("Para iniciar a partida, digite o nome do Jogador "+chave+":");
+            String nome = sc.nextLine();
+            System.out.println("O simbolo do(a) " + nome + " será X");
+            Jogador jogador = new Jogador(nome, simbolo[index++]);
+            jogadores.put(chave++,jogador);        
+            System.out.println();
+                      
+        }while(chave<3);
+        
     }
 
     /**
@@ -100,10 +130,10 @@ class Partida {
                 System.out.println("A partida terminou empatada!");
                 break;
             case JOGADOR_1:
-                System.out.println(jogador_1.getNome() + " ganhou o jogo.");
+                System.out.println(jogadores.get(JOGADORDAVEZ_1).getNome() + " ganhou o jogo.");
                 break;
             case JOGADOR_2:
-                System.out.println(jogador_2.getNome() + " ganhou o jogo.");
+                System.out.println(jogadores.get(JOGADORDAVEZ_2).getNome() + " ganhou o jogo.");
                 break;
                 
         }
@@ -116,25 +146,22 @@ class Partida {
      * @return Jogador - Jogador que está na vez.
      */
     private Jogador jogadorVez() {
-        return ((vez++ % 2 == 0) ? jogador_1 : jogador_2);
+        return ((vez++ % 2 == 0) ? jogadores.get(JOGADORDAVEZ_1) : jogadores.get(JOGADORDAVEZ_2));
     }
 
     /**
-     * Método responsável por solicitar uma jogada ao jogador da vez.
+     * Método responsável por realizar a jogada do jogador da vez.
      *
      * @param jogadorVez - Jogador que está na vez.
      */
     private void realizarJogada(Jogador jogadorVez) {
 
-        boolean jogadaDisponivel = false;
+        boolean jogadaDisponivel;
 
         do {
-            int linha, coluna;
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Digite a linha que deseja jogar " + jogadorVez.getNome() + ":");
-            linha = sc.nextInt();
-            System.out.println("Digite a coluna que deseja jogar " + jogadorVez.getNome() + ":");
-            coluna = sc.nextInt();
+            int linha = solicitar(LINHA,jogadorVez);
+            int coluna = solicitar(COLUNA,jogadorVez);
+            
             jogadaDisponivel = validarJogada(jogadorVez, --linha, --coluna);
 
             if (!jogadaDisponivel) {
@@ -145,6 +172,37 @@ class Partida {
         } while (!jogadaDisponivel);
 
         System.out.println("Jogada realizada com sucesso!");
+    }
+    
+    /**
+     * Método responsável por solicitar uma jogada ao jogador da vez.
+     * 
+     * @param posicao - String que determina se será a Linha ou a Coluna a ser informada.
+     * @param jogadorVez - Jogador que está na vez.
+     * @return 
+     */
+    private int solicitar(String posicao, Jogador jogadorVez){
+        int pos = -1;
+        Scanner sc = new Scanner(System.in);
+        do {
+            try {
+ 
+                System.out.println("Digite a "+posicao+" que deseja jogar " + jogadorVez.getNome() + ":");
+                pos = sc.nextInt();
+                if((pos<1)||(pos>3)){
+                    System.out.println(posicao+" inválida!");
+                 }
+            } catch (Exception e) {
+                System.out.println(posicao+" inválida!");
+            } finally {
+                sc.nextLine();
+                System.out.println();
+            }
+            
+            
+        } while ((pos<1)||(pos>3));
+        
+        return pos;
     }
 
     /**
